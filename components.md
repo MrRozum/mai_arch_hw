@@ -31,6 +31,7 @@ System_Boundary(conference_site, "Маркетплейс") {
    ContainerDb(db, "База данных", "PostgreSQL", "Хранение данных о блогах, постах и пользователях", $tags = "storage")
 }
 
+
 Rel(web_site, get_item, "Работа с покупателем", "localhost/get_item")
 Rel(get_item, db, "INSERT/SELECT/UPDATE", "SQL")
 
@@ -42,6 +43,7 @@ Rel(recsys_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
 Rel(web_site, authorize_service, "Работа покупателями и  продавцами", "localhost/auth")
 Rel(authorize_service, db, "INSERT/SELECT/UPDATE", "SQL")
+
 
 @enduml
 ```
