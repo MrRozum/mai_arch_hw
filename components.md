@@ -24,13 +24,12 @@ Rel(admin, web_site, "Модерация товаров, рекомендате�
 
 System_Boundary(conference_site, "Маркетплейс") {
    'Container(web_site, "Клиентский веб-сайт", ")
-   Container(authorize_service, "Сервис авторизации", "C++", "Сервис управления пользователями", $tags = "microService")    
-   Container(item_service, "Сервис управления карточкой товара", "C++", "Сервис создания/редактирования/удаления карточки товара", $tags = "microService") 
-   Container(recsys_service, "Рекомендательная система", "C++", "Сервис рекомендательной системы товаров покупателя", $tags = "microService + ML")
-   Container(get_item, "Просмотр карточек товаров", "C++", "Сервис для просмотра товаров и их поиску", $tags="microService")
-   ContainerDb(db, "База данных", "PostgreSQL", "Хранение данных о блогах, постах и пользователях", $tags = "storage")
+   Container(client_service, "Сервис авторизации", "C++", "Сервис управления пользователями", $tags = "microService")    
+   Container(post_service, "Сервис постов", "C++", "Сервис управления блогами", $tags = "microService") 
+   Container(blog_service, "Сервис блогов", "C++", "Сервис управления постами", $tags = "microService")   
+   ContainerDb(db, "База данных", "MySQL", "Хранение данных о блогах, постах и пользователях", $tags = "storage")
+   
 }
-
 
 Rel(web_site, get_item, "Работа с покупателем", "localhost/get_item")
 Rel(get_item, db, "INSERT/SELECT/UPDATE", "SQL")
@@ -41,9 +40,8 @@ Rel(item_service, db, "INSERT/SELECT/UPDATE", "SQL")
 Rel(web_site, recsys_service, "Работа рекомендательной системы", "localhost/recommend")
 Rel(recsys_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
-Rel(web_site, authorize_service, "Работа покупателями и  продавцами", "localhost/auth")
-Rel(authorize_service, db, "INSERT/SELECT/UPDATE", "SQL")
-
+Rel(web_site, blog_service, "Работа с блогами", "localhost/conf")
+Rel(blog_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
 @enduml
 ```
@@ -120,21 +118,17 @@ class Buyer {
   city
 }
 
-class Seller {
+class Topic {
   id
-  login
-  first_name
-  second_name
-  email
-  city
-  company_nane
-  company_adress
-  website_link
+  title
+  author_id
+  blog_id
+  body
+  change_date
 }
 
-
-Buyer <- Item_card
-Item_card <- Seller
+User <- Blog
+Blog <- Topic
 
 @enduml
 ```
